@@ -1,0 +1,22 @@
+services:
+    parser.executor:
+        class: ParserBundle\Parser\ParserExecutor
+        arguments: ["@parser.storage", "@parser.scenario_builder", "@parser.scenario_handler", "@parser.requester"]
+
+    parser.storage.default:
+        class: ParserBundle\Storage\ORM
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    parser.loader:
+        class: ParserBundle\Parser\ParserLoader
+        arguments: ["%parser_list%", "@service_container"]
+
+    parser.scenario_builder:
+        class: ParserBundle\Parser\ScenarioBuilder
+        arguments: ["@parser.requester"]
+
+    parser.requester:
+        class: ParserBundle\Parser\Requester
+
+    parser.scenario_handler:
+        class: ParserBundle\Parser\ScenarioHandler

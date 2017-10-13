@@ -1,0 +1,26 @@
+{
+  "name" : "pliusnin/parserbundle",
+  "description" : "Symfony Parser bundle for parsing data from websites",
+  "version" : "1.0.0",
+  "type" : "symfony-bundle",
+  "homepage": "https://github.com/pliusnin/ParserBundle",
+  "license" : "MIT",
+  "keywords" : ["parser", "parser bundle"],
+  "authors" : [{
+    "name" : "Dmitry Pliusnin",
+    "email" : "pliusnin@gmail.com"
+  }],
+  "require" : {
+    "php": ">=5.3.2",
+    "symfony/symfony": ">=2.8",
+    "guzzlehttp/guzzle": ">=6.0"
+  },
+  "autoload" : {
+    "psr-4" : { "Pliusnin\\ParserBundle\\" : "" }
+  },
+  "extra" : {
+    "branch-alias" : {
+      "dev-master" : "1.0.x-dev"
+    }
+  }
+}
