@@ -16,10 +16,10 @@ use ParserBundle\Parser\ScenarioHandler;
 use ParserBundle\Storage\StorageInterface;
 
 /**
- * Class ParserHandlerTest
+ * Class ParserExecutorTest
  * @package ParserBundle\Tests\Parser
  */
-class ParserHandlerTest extends \PHPUnit_Framework_TestCase
+class ParserExecutorTest extends \PHPUnit_Framework_TestCase
 {
     private function getParser()
     {
@@ -99,9 +99,9 @@ class ParserHandlerTest extends \PHPUnit_Framework_TestCase
         $parser = $this->getParser();
         $parser->expects($this->once())->method('preSave')->willReturn(1);
 
-        $parserHandler = $this->getParserExecutor($storage, $scenarioBuilder, $scenarioHandler);
+        $parserExecutor = $this->getParserExecutor($storage, $scenarioBuilder, $scenarioHandler);
 
-        $result = $parserHandler->run($parser);
+        $result = $parserExecutor->run($parser);
         $this->assertTrue($result);
     }
 
@@ -111,17 +111,24 @@ class ParserHandlerTest extends \PHPUnit_Framework_TestCase
         $scenarioBuilder = $this->getScenarioBuilder();
         $scenarioBuilder
             ->expects($this->once())
-            ->method('executeScenario')
+            ->method('getScenario')
+        ;
+
+        $scenarioHandler = $this->getScenarioHandler();
+        $scenarioHandler
+            ->expects($this->once())
+            ->method('handle')
             ->willReturn($data)
         ;
+
         $storage = $this->getStorage();
         $storage->expects($this->atLeast(2))->method('save');
-        $parserHandler = $this->getParserExecutor($storage, $scenarioBuilder);
+        $parserExecutor = $this->getParserExecutor($storage, $scenarioBuilder, $scenarioHandler);
 
         $parser = $this->getParser();
         $parser->expects($this->once())->method('preSave')->willReturn($data);
 
-        $result = $parserHandler->run($parser);
+        $result = $parserExecutor->run($parser);
         $this->assertTrue($result);
     }
 
@@ -130,10 +137,18 @@ class ParserHandlerTest extends \PHPUnit_Framework_TestCase
         $scenarioBuilder = $this->getScenarioBuilder();
         $scenarioBuilder
             ->expects($this->once())
-            ->method('executeScenario')
+            ->method('getScenario')
             ->willReturn(1)
         ;
-        $parserHandler = $this->getParserExecutor(null, $scenarioBuilder);
+
+        $scenarioHandler = $this->getScenarioHandler();
+        $scenarioHandler
+            ->expects($this->once())
+            ->method('handle')
+            ->willReturn(1)
+        ;
+
+        $parserHandler = $this->getParserExecutor(null, $scenarioBuilder, $scenarioHandler);
         $parser = $this->getParser();
         $result = $parserHandler->run($parser);
         $this->assertNull($result);

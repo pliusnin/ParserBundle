@@ -19,18 +19,15 @@ class ScenarioBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public function testExecuteScenario()
     {
-        $subject = array();
         $scenarioBuilder = $this->getScenarioBuilder();
-        $result = $scenarioBuilder->executeScenario('http://localhost', $subject);
+        $scenario = $scenarioBuilder->getScenario();
 
-        $this->assertEquals(2, count($result));
+        $this->assertTrue(is_array($scenario));
     }
 
     private function getScenarioBuilder()
     {
-        $crawler = new Crawler('<body><ul><li><h1 class="header1">Test 1</h1></li><li><h1 class="header2">Test 2</h1></li></ul></body>');
         $requester = $this->createMock(Requester::class);
-        $requester->expects($this->once())->method('getHtml')->will($this->returnValue($crawler));
 
         $scenarioBuilder = new ScenarioBuilder($requester);
         $scenarioBuilder
